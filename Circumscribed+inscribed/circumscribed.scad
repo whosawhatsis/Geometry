@@ -13,7 +13,7 @@ $fa = 2;
 
 
 difference(){
-	cylinder(h = height, r = radius / cos(180 / n) + wall_thickness, $fn = n);
+	cylinder(h = height, r = (radius + wall_thickness) / cos(180 / n), $fn = n);
 	cylinder(h = height*3, r = radius, $fn = 100, center = true);
 };
 
