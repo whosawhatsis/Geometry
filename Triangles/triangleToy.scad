@@ -1,9 +1,12 @@
-length = [50, 170];
+// File TriangleToy.scad
+// Prints out a triangle with swingable sides
+// (c) 2020 Rich Cameron
+// Released under a CC-BY 4.0 International License
+
+length = [50, 170]; // [short side, long sides]
 hole = 12;
 width = 8;
 thick = 2;
-fit = .1;
-
 
 $fs = .2;
 $fa = 2;
@@ -18,7 +21,6 @@ translate([width * 2 + 1, 0, 0]) rotate(180) linear_extrude(thick) difference() 
 	for(i = [1, -1]) translate([0, i * length[0] / 2, 0]) circle(hole / 2);
 }
 
-//for(i = [0, 1]) rotate([90, 0, i * 180]) translate([length[0] / 2, width, -thick]) rotate(90 - angles[i]) {
 for(i = [0, 1]) rotate(i * 180) translate([i * (width + 1), -length[1] / 2 + width / 2, 0]) linear_extrude(thick) difference() {
 	union() {
 		circle(width);
