@@ -11,13 +11,20 @@ height = 10;
 $fs = .2;
 $fa = 2;
 
-difference(){
-	cylinder(h = height, r = radius + wall_thickness, $fn = 100);
-	cylinder(h = height * 3, r = radius, center = true, $fn = n);
+if(height) {
+	linear_extrude(height) outside();
+	linear_extrude(wall_thickness * 2) inside();
+} else {
+	outside();
+	inside();
+}
+
+module outside() difference() {
+	circle(r = radius + wall_thickness, $fn = 100);
+	circle(r = radius, $fn = n);
 };
 
-
-linear_extrude(wall_thickness * 2) intersection() {
+module inside() intersection() {
 	circle(radius);
 	union() {
 		rotate(180 / n) translate([0, -wall_thickness, 0]) square([radius, 2 *wall_thickness]);

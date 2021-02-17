@@ -14,20 +14,34 @@ frame = 10;
 $fs = .2;
 $fa = 2;
 
-for(a = [0:360 / sides:359]) rotate(a) translate([0, spacing / sin(360 / sides), 0]) if(a == 0) for(i = [1, -1]) translate([i * spacing / 3, 0, 0]) intersection() {
-	translate([i * r, r, 0]) cube(r * 2, center = true);
-	union() {
-		linear_extrude(thick / 2) wedge(true);
-		linear_extrude(thick) wedge();
+for(a = [0:360 / sides:359]) rotate(a) translate([0, spacing / sin(360 / sides), 0]) if(a == 0) {
+	for(i = [1, -1]) translate([i * spacing / 3, 0, 0]) if(thick) {
+		intersection() {
+			translate([i * r, r, 0]) cube(r * 2, center = true);
+			union() {
+				linear_extrude(thick / 2) wedge(true);
+				linear_extrude(thick) wedge();
+			}
+		}
+	} else intersection() {
+		translate([i * r, r, 0]) square(r * 2, center = true);
+		wedge(true);
 	}
 } else {
-	linear_extrude(thick / 2) wedge(true);
-	linear_extrude(thick) wedge();
+	if(thick) {
+		linear_extrude(thick / 2) wedge(true);
+		linear_extrude(thick) wedge();
+	} else wedge(true);
 }
 
-if(frame) linear_extrude(thick / 2) translate([1, 1, 0] * (-r - frame - spacing * (1 + 1 / sin(360 / sides)))) difference() {
+if(frame) translate([1, 1, 0] * (-r - frame - spacing * (1 + 1 / sin(360 / sides)))) {
+	if(thick) linear_extrude(thick / 2) frame();
+	else frame();
+}
+	
+module frame() difference() {
 	square([r + frame, r * PI + frame]);
-	translate([frame, frame, 0]) square([r, r * PI]);
+	translate([frame, frame, 0]) square([r + frame, r * PI + frame]);
 }
 
 module wedge(round = false) {
