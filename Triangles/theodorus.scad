@@ -2,8 +2,10 @@
 // makes a spiral of theodorus
 // (c) 2020, Rich Cameron, licensed Creative Commons CC-BY4.0
 
-max = 53; // number of triangles to be made
-// the last triangle's sides will be sqrt(max), 1 and sqrt(max + 1)
+max = 53; // number of triangles to be made -1 
+// if max = 16, 17 triangles will be made
+// triangles are right triangles with sides  1 : sqrt(n-1) :sqrt(n)
+// 1 <= n <= max +1
 
 xyscale = 10;
 wall = 1;
