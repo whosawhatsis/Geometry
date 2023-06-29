@@ -48,7 +48,7 @@ module wedge(round = false) {
 	difference() {
 		intersection() {
 			if(round) circle(r);
-			else circle(r, $fn = sides);
+			else rotate(90 - 180 / sides) circle(r, $fn = sides);
 			intersection_for(a = [-1, 1]) rotate(a * (90 - 180 / sides)) translate([-r, 0, 0]) square(r * 2);
 		}
 		rotate(-180 / sides) translate([0, r / 2, 0]) circle(notch, $fn = 4);

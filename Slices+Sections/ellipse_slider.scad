@@ -4,6 +4,7 @@
 // to a point on the ellipse is constant
 // (c) 2020 Rich Cameron
 // released under a Creative Commons CC-BY 4.0 International License
+
 d = [80, 60]; // minor and major axes, mm 
 holesize = 5; //diameter of the focus holes 
 h = 8; // thickness of the piece 
@@ -15,7 +16,7 @@ $fa = 2;
 focus = [max(0, sqrt(pow(d[0], 2) - pow(d[1], 2)) / 2), max(0, sqrt(pow(d[1], 2) - pow(d[0], 2)) / 2)];
 
 translate([0, 0, h / 2]) difference() {
-	for(i = [0, 1]) mirror([0, 0, i]) 
+	union() for(i = [0, 1]) mirror([0, 0, i]) 
 		hull() for(i = [0, 1]) translate([0, 0, -h / 2]) linear_extrude(1 + i * h / 2) offset(i * -h / 2) scale([1 / d[1], 1 / d[0], 1]) circle(d[0] * d[1] / 2);
 	for(i = [-1, 1]) translate(i * focus) rotate_extrude() for(m = [0, 1]) mirror([0, m, 0]) {
 		square([holesize / 2, h]);

@@ -36,7 +36,7 @@ rotate(45) {
 	difference() {
 		translate([0, -c, 0]) {
 			intersection() {
-				for(i = [0, 1]) mirror([0, 0, i]) hull() for(i = [0, 1]) translate([0, 0, -h / 2]) linear_extrude(1 + i * h / 2) offset(i * -h / 2) intersection() {
+				union() for(i = [0, 1]) mirror([0, 0, i]) hull() for(i = [0, 1]) translate([0, 0, -h / 2]) linear_extrude(1 + i * h / 2) offset(i * -h / 2) intersection() {
 					polygon([for(x = [-length / 2:length / 2]) [x, f(x)]]);
 					translate([0, -c, 0]) offset(i * h) frame();
 				}
