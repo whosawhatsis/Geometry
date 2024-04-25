@@ -11,7 +11,7 @@ faces = 20; edge = 30; // icosahedron
 
 //edge = 35; // edge length, used to determine the size.
 linewidth = 0; // cut/fold line width for 2D export. Set to zero for 3D
-baselayer = 0; // height of print below (outside) the hinges
+baselayer = 1; // height of print below (outside) the hinges to limit back-bending. Use at least 1 unless printing with TPU.
 printheight = 50; // total height to truncate the pyramidal sides
 hinge = .6; // thickness of the hinges. Using a negative value will leave a gap
 hingeratio = 2; // length/thickness ratio for hinges. Spreads the bend out to reduce fatigue

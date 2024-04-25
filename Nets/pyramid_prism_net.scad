@@ -4,13 +4,17 @@
 // released under a Creative Commons CC-BY 4.0 International License
 r = 20; //radius, mm 
 h = 30; //height
-sides = 5;//number of faces on side of prism or pyramid (e.g. tetrahdron =3)
+sides = 4;//number of faces on side of prism or pyramid (e.g. tetrahdron =3)
 pyramid = true; //true gives a pyramid, false a prism
 star = true; //true lays out net in star shape, false in linear 
 linewidth = 0; // cut/fold line width for 2D export. Set to zero for 3D
-baselayer = 1; // height of print below (outside) the hinges
+baselayer = 0; // height of print below (outside) the hinges to limit back-bending. Use at least 1 unless printing with TPU.
 printheight = 500; // total height to truncate the pyramidal sides
-hinge = .201; // thickness of the hinges. Using a negative value will leave a gap
+hinge = .6; // thickness of the hinges. Using a negative value will leave a gap
+hingeratio = 2; // length/thickness ratio for hinges. Spreads the bend out to reduce fatigue
+
+$fs = .2;
+$fa = 2;
 
 echo(str("surface area = ", (pyramid ? 1 : 2) * sides * r * sin(180 / sides) * r * cos(180 / sides) + sides * (pyramid ? h / sin(atan(h / (r * cos(180 / sides)))) : h * 2) * r * sin(180 / sides), "mm^2"));
 
@@ -53,16 +57,10 @@ if(linewidth) difference() {
 	net(offset = linewidth / 2);
 	net(offset = -linewidth / 2);
 } else {
-	net(offset = min(-.1, hinge));
-	if(hinge > 0) #linear_extrude(hinge) offset(-r * sin(180 / sides) / 3) net(offset = .001, extrude = 0);
+	net(offset = (hinge < 0) ? hinge : min(-hinge * hingeratio, -.001));
+	if(hinge > 0) linear_extrude(hinge) offset(-hinge * hingeratio) {
+		offset(-r * sin(180 / sides) / 3) net(offset = .001, extrude = 0);
+		net(offset = -.001, extrude = 0);
+	}
 }
 %net(true);
-	
-/*for(i = [0:sides - 1]) rotate(i * 360 / sides) translate([r * cos(180 / sides), 0, 0]) rotate([0, slant_a - 180, 0]) translate([h / 2, 0, 0]) %offset(-.1) scale([h / 2, r * sin(180 / sides), 1]) {
-	if(pyramid) polygon([[-1, -1], [2 * slant_h / h - 1, 0], [-1, 1]]);
-	else square(2, center = true);
-}
-
-if(!pyramid) %translate([0, 0, h]) rotate(180 / sides) circle(r = r, $fn = sides);
-
-%rotate(180 / sides) cylinder(r = r, h = h, $fn = sides);*/
