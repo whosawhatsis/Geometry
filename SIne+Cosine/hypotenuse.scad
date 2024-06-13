@@ -43,7 +43,7 @@ module hypotenuse(anglegauge = anglegauge) difference() {
 			for(i = [0, 1]) translate([0, i * hypotenuse, 0]) circle(.2);
 		}
 		if(anglegauge) linear_extrude(hypotenuse_height, convexity = 5) mirror([1, 0, 0]) difference() {
-			for(i = [0]) translate([0, i * hypotenuse, 0]) intersection() {
+			union() for(i = [0]) translate([0, i * hypotenuse, 0]) intersection() {
 				difference() {
 					circle(anglegauge / 100 + sqrt(pow(anglegauge, 2) + pow(peg / 2 + clearance + wall, 2)));
 					circle(anglegauge / 100 + sqrt(pow(anglegauge, 2) + pow(peg / 2 + clearance + wall, 2)) - wall);
@@ -67,7 +67,7 @@ module hypotenuse(anglegauge = anglegauge) difference() {
 module frame() {
 	difference() {
 		linear_extrude(height + 1, convexity = 5) difference() {
-			for(a = [0, 1]) mirror([a, a, 0]) hull() for(i = [0, 1]) translate([0, i * hypotenuse, 0]) circle(peg/2 + clearance + wall);
+			union() for(a = [0, 1]) mirror([a, a, 0]) hull() for(i = [0, 1]) translate([0, i * hypotenuse, 0]) circle(peg/2 + clearance + wall);
 			for(a = [0, 1]) mirror([a, a, 0]) hull() for(i = [0, 1]) translate([0, i * hypotenuse, 0]) circle(peg/2 + clearance + .5 * (1 - a));
 		}
 		translate([0, 0, height + 1]) for(a = [0, 1]) mirror([a, a, 0]) {
