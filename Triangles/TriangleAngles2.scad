@@ -16,21 +16,27 @@ $fa = 2;
 
 corners = [[0, 0], [top, height], [base, 0]];// - [for(i = [0:2]) [top / 2, height / 2]];
 
-linear_extrude(thickness / 2) polygon(corners);
+if(thickness) {
+	linear_extrude(thickness / 2) polygon(corners);
 	
-linear_extrude(thickness) {
+	linear_extrude(thickness) {
+		difference() {
+			polygon(corners);
+			for(c = corners) translate(c) circle(r);
+		}
+	}
+
+	linear_extrude(thickness / 2) for(i = [0:2]) translate([base / 2 + i - 2, -2, 0]) rotate(180) intersection() {
+		rotate(180 * i) translate(-corners[i]) polygon(corners);
+		circle(r);
+	}
+} else {
 	difference() {
 		polygon(corners);
 		for(c = corners) translate(c) circle(r);
 	}
-	*for(i = [0:2]) translate([i - 1, (i - 1) ? -1 : 1, 0]) intersection() {
+	for(i = [0:2]) translate([i - 1, (i - 1) ? -1 : 1, 0]) intersection() {
 		polygon(corners);
 		translate(corners[i]) circle(r);
 	}
-}
-
-linear_extrude(thickness / 2) for(i = [0:2]) translate([base / 2 + i - 2, -2, 0]) rotate(180) intersection() {
-	rotate(180 * i) translate(-corners[i]) polygon(corners);
-	circle(r);
-
 }
